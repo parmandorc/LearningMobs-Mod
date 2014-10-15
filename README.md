@@ -1,4 +1,4 @@
 LearningMobs-Mod
 ================
 
-Source code of the LearningMobs Mod project can be found in the src directory
+Source code of the LearningMobs Mod project can be found in the forge/src directory
