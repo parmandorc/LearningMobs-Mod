@@ -1,0 +1,19 @@
+msg.autoRespawningEnabledCommand_InvalidArguments.txt=Invalid arguments. Type "/help autoRespawningEnabled" for help.
+msg.autoRespawningEnabledCommand_setToTrue.txt=set autoRespawningEnabled to <true>
+msg.autoRespawningEnabledCommand_setToFalse.txt=set autoRespawningEnabled to <false>
+msg.autoRespawningEnabledCommand_isTrue.txt=autoRespawningEnabled = <true>
+msg.autoRespawningEnabledCommand_isFalse.txt=autoRespawningEnabled = <false>
+msg.clearQValuesCommand_InvalidArguments.txt=Invalid number of arguments. Type "/help clearQValues" for help.
+msg.clearQValuesCommand_ClearAll.txt=Clearing q-values map of all LearningMob classes.
+msg.clearQValuesCommand_ClearLMFighter.txt=Clearing q-values map of LMFigher class.
+msg.clearQValuesCommand_InvalidLMClass.txt=No class exists with specified name. Type "/help clearQValues" for help.
+msg.QRandomSelectionRateCommand_InvalidArguments.txt=Invalid number of arguments. Type "/help QRandomSelectionRate" for help.
+msg.QRandomSelectionRateCommand_printValue.txt=QRandomSelectionRate factor's value for class 
+msg.QRandomSelectionRateCommand_setValue.txt=Setting QRandomSelectionRate factor's value for class 
+msg.QRandomSelectionRateCommand_InvalidValue.txt=Specified value must be a number between 0 and 1.
+msg.QRandomSelectionRateCommand_InvalidClass.txt=No class exists with specified name. Type "/help QRandomSelectionRate" for help.
+msg.PVEEnabledCommand_InvalidArguments.txt=Invalid arguments. Type "/help PVEEnabled" for help.
+msg.PVEEnabledCommand_setToTrue.txt=set PVEEnabled to <true>
+msg.PVEEnabledCommand_setToFalse.txt=set PVEEnabled to <false>
+msg.PVEEnabledCommand_isTrue.txt=PVEEnabled = <true>
+msg.PVEEnabledCommand_isFalse.txt=PVEEnabled = <false>

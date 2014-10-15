@@ -1,0 +1,5 @@
+package com.parmandorc.LearningMobs.Commands;
+
+public class SetQRandomSelectionRate {
+
+}

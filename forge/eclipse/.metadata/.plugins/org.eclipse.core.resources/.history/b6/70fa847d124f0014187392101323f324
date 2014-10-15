@@ -1,0 +1,26 @@
+package com.parmandorc.LearningMobs.Commands;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+
+public class SetQRandomSelectionRate extends CommandBase
+{
+	@Override
+	public String getCommandName() 
+	{
+		return "setQRandomSelectionRate";
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender p_71518_1_) 
+	{
+		return "/setQRandomSelectionRate <LearningMobClassName> [value] // Sets the QRandomSelectionRate factor for the specified class. LearningMobClassName valid values: LMFigher";
+	}
+
+	@Override
+	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,0 +1,28 @@
+package com.parmandorc.LearningMobs.Commands;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+
+public class ClearQValuesCommand extends CommandBase 
+{
+
+	@Override
+	public String getCommandName() 
+	{
+		return "clearQValues";
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender p_71518_1_) 
+	{
+		return "Clears the Q-values map of all Learning Mobs, or just of the specified class. Warning: information may be irretrievably lost! Usage: /clearQValues [LearningMobClassName]";
+	}
+
+	@Override
+	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) 
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+}

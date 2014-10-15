@@ -1,0 +1,95 @@
+---- Minecraft Crash Report ----
+// Shall we play a game?
+
+Time: 6/10/14 16:36
+Description: Ticking entity
+
+java.lang.NullPointerException: Ticking entity
+	at com.parmandorc.LearningMobs.AI.BasicAttack.updateTask(BasicAttack.java:41)
+	at net.minecraft.entity.ai.EntityAITasks.onUpdateTasks(EntityAITasks.java:125)
+	at net.minecraft.entity.EntityLiving.updateAITasks(EntityLiving.java:613)
+	at net.minecraft.entity.EntityLivingBase.onLivingUpdate(EntityLivingBase.java:1993)
+	at net.minecraft.entity.EntityLiving.onLivingUpdate(EntityLiving.java:431)
+	at net.minecraft.entity.EntityLivingBase.onUpdate(EntityLivingBase.java:1826)
+	at net.minecraft.entity.EntityLiving.onUpdate(EntityLiving.java:250)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:2253)
+	at net.minecraft.world.WorldServer.updateEntityWithOptionalForce(WorldServer.java:698)
+	at net.minecraft.world.World.updateEntity(World.java:2213)
+	at net.minecraft.world.World.updateEntities(World.java:2063)
+	at net.minecraft.world.WorldServer.updateEntities(WorldServer.java:529)
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:713)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:624)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:118)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:495)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:762)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Stacktrace:
+	at com.parmandorc.LearningMobs.AI.BasicAttack.updateTask(BasicAttack.java:41)
+	at net.minecraft.entity.ai.EntityAITasks.onUpdateTasks(EntityAITasks.java:125)
+	at net.minecraft.entity.EntityLiving.updateAITasks(EntityLiving.java:613)
+	at net.minecraft.entity.EntityLivingBase.onLivingUpdate(EntityLivingBase.java:1993)
+	at net.minecraft.entity.EntityLiving.onLivingUpdate(EntityLiving.java:431)
+	at net.minecraft.entity.EntityLivingBase.onUpdate(EntityLivingBase.java:1826)
+	at net.minecraft.entity.EntityLiving.onUpdate(EntityLiving.java:250)
+	at net.minecraft.world.World.updateEntityWithOptionalForce(World.java:2253)
+	at net.minecraft.world.WorldServer.updateEntityWithOptionalForce(WorldServer.java:698)
+	at net.minecraft.world.World.updateEntity(World.java:2213)
+
+-- Entity being ticked --
+Details:
+	Entity Type: learningmobsmod.LMFighter (com.parmandorc.LearningMobs.Fighter.EntityLMFighter)
+	Entity ID: 17
+	Entity Name: LMFighter
+	Entity's Exact location: 24,24, 65,00, -389,21
+	Entity's Block location: World: (24,65,-390), Chunk: (at 8,4,10 in 1,-25; contains blocks 16,0,-400 to 31,255,-385), Region: (0,-1; contains chunks 0,-32 to 31,-1, blocks 0,0,-512 to 511,255,-1)
+	Entity's Momentum: 0,00, -0,08, 0,00
+Stacktrace:
+	at net.minecraft.world.World.updateEntities(World.java:2063)
+	at net.minecraft.world.WorldServer.updateEntities(WorldServer.java:529)
+
+-- Affected level --
+Details:
+	Level name: New World 2
+	All players: 1 total; [EntityPlayerMP['ForgeDevName'/12, l='New World 2', x=24,88, y=66,79, z=-387,83]]
+	Chunk stats: ServerChunkCache: 1250 Drop: 0
+	Level seed: 3715684318128417041
+	Level generator: ID 00 - default, ver 1. Features enabled: true
+	Level generator options: 
+	Level spawn location: World: (188,64,64), Chunk: (at 12,4,0 in 11,4; contains blocks 176,0,64 to 191,255,79), Region: (0,0; contains chunks 0,0 to 31,31, blocks 0,0,0 to 511,255,511)
+	Level time: 404452 game time, 7229 day time
+	Level dimension: 0
+	Level storage version: 0x04ABD - Anvil
+	Level weather: Rain time: 46830 (now: false), thunder time: 13071 (now: false)
+	Level game mode: Game mode: creative (ID 1). Hardcore: false. Cheats: true
+Stacktrace:
+	at net.minecraft.server.MinecraftServer.updateTimeLightAndEntities(MinecraftServer.java:713)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:624)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:118)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:495)
+	at net.minecraft.server.MinecraftServer$2.run(MinecraftServer.java:762)
+
+-- System Details --
+Details:
+	Minecraft Version: 1.7.10
+	Operating System: Mac OS X (x86_64) version 10.9.5
+	Java Version: 1.7.0_67, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 816914096 bytes (779 MB) / 1037959168 bytes (989 MB) up to 1037959168 bytes (989 MB)
+	JVM Flags: 3 total; -Xincgc -Xmx1024M -Xms1024M
+	AABB Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	IntCache: cache: 0, tcache: 0, allocated: 13, tallocated: 95
+	FML: MCP v9.05 FML v7.10.18.1180 Minecraft Forge 10.13.0.1180 4 mods loaded, 4 mods active
+	mcp{9.05} [Minecraft Coder Pack] (minecraft.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	FML{7.10.18.1180} [Forge Mod Loader] (forgeSrc-1.7.10-10.13.0.1180.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Forge{10.13.0.1180} [Minecraft Forge] (forgeSrc-1.7.10-10.13.0.1180.jar) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	learningmobsmod{0.0} [LearningMobs Mod] (bin) Unloaded->Constructed->Pre-initialized->Initialized->Post-initialized->Available->Available->Available->Available
+	Profiler Position: N/A (disabled)
+	Vec3 Pool Size: 0 (0 bytes; 0 MB) allocated, 0 (0 bytes; 0 MB) used
+	Player Count: 1 / 8; [EntityPlayerMP['ForgeDevName'/12, l='New World 2', x=24,88, y=66,79, z=-387,83]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'

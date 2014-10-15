@@ -1,0 +1,16 @@
+[
+{
+  "modid": "learningmobsmod",
+  "name": "LearningMobs Mod",
+  "description": "SARSA Q-learning algorithm application to Minecraft mobs.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["parmandorc"],
+  "credits": "parmandorc is the developer of this mod",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

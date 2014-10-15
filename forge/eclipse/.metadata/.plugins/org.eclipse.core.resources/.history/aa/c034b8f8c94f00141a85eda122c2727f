@@ -1,0 +1,26 @@
+package com.parmandorc.LearningMobs.Commands;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+
+public class PVEEnabledCommand extends CommandBase 
+{
+	@Override
+	public String getCommandName() 
+	{
+		return "PVEEnabled";
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender p_71518_1_) 
+	{
+		return "/PVEEnabled [<true|false>] // ";
+	}
+
+	@Override
+	public void processCommand(ICommandSender p_71515_1_, String[] p_71515_2_) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
