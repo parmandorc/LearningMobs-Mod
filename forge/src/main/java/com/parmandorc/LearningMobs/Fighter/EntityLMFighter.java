@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * LMFighter class. This is a melee fighting mob, that attacks with its sword.
+ */
 package com.parmandorc.LearningMobs.Fighter;
 
 import java.io.File;
@@ -21,29 +28,28 @@ import com.parmandorc.LearningMobs.AI.MoveTowardsTarget;
 
 public class EntityLMFighter extends EntityLearningMob 
 {	
-	/* Table of knowledge used in the q-learning algorithm. 
+	/** Table of knowledge used in the q-learning algorithm. 
 	 * Knowledge base is shared amongst all entities of same class in the world.
 	 * The key is obtained by the method getQKey() */
 	public static HashMap<Integer,Double> Q_values;
-	/* Variable that controls the number of entities of this class in the world.
-	 * Used for the initialization of the Q_values table. */
-	public static int inWorldCount = 0;
 
+	/** This factor determines how probably will a task be chosen randomly instead of choosing the best task. */
 	public static double QRandomSelectionRate = 1;
 
+	/** Number of qiterations executed since the beginning of this game's execution. Currently with no proper use.*/
 	public static int QIterations = 0;
 
 	
-	//Total number of LM tasks this LMob is able to use
+	/**Total number of LM tasks this LMob is able to use*/
 	final int totalLMTasks = 3;
-	/* List of LM tasks this LMob is able to use. Each number will designate
+	/** List of LM tasks this LMob is able to use. Each number will designate
 	 * the position of each task in the tasks array LMTasks[] from super class. 
 	 * Thus, values must be in the range 0 - totalLMTasks. */
 	final int LMTask_moveTowards = 0;
 	final int LMTask_moveAway = 1;
 	final int LMTask_basicAttack = 2;
 
-	//Constructor
+	/**Constructor*/
 	public EntityLMFighter(World p_i1738_1_) 
 	{
 		super(p_i1738_1_);
@@ -57,6 +63,9 @@ public class EntityLMFighter extends EntityLearningMob
 	}
 	
 	@Override
+	/**
+	 * Sets equipment upon spawning
+	 */
 	public IEntityLivingData onSpawnWithEgg(IEntityLivingData p_110161_1_)
 	{
 		Object p_110161_1_1 = super.onSpawnWithEgg(p_110161_1_);
@@ -67,6 +76,7 @@ public class EntityLMFighter extends EntityLearningMob
 	}
 	
 	@Override
+	/** Sets this mobs AD */
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -74,6 +84,7 @@ public class EntityLMFighter extends EntityLearningMob
     }
 	
 	@Override
+	/** Currently only handles changes in PVE mode, since this mob deals 2 damage to other LM, but 6 damage to players. */
 	public void onUpdate()
 	{
         this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(PVEEnabled ? 0 : -4.0);
@@ -81,8 +92,9 @@ public class EntityLMFighter extends EntityLearningMob
 		super.onUpdate();
 	}
 	
-	//This method takes care of obtaining the Q_values table from file if this is the first entity of this class spawning.
 	@Override
+	/**This method takes care of obtaining the Q_values table from file if this is the first entity of this class spawning,
+	 * or if this file doesn't exist, creates an empty map.*/
 	protected void Q_values_init()
 	{
 		if (Q_values == null)

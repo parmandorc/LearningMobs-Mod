@@ -13,25 +13,7 @@
 		</list>
 	</section>
 	<section name="WorkbenchPreferenceDialogSettings">
-		<item value="169" key="DIALOG_Y_ORIGIN"/>
+		<item value="120" key="DIALOG_Y_ORIGIN"/>
 		<item value="531" key="DIALOG_X_ORIGIN"/>
-	</section>
-	<section name="InstallationDialogSettings">
-		<item value="702" key="DIALOG_WIDTH"/>
-		<item value="1" key="DIALOG_Y_ORIGIN"/>
-		<item value="652" key="DIALOG_HEIGHT"/>
-		<item value="82" key="DIALOG_X_ORIGIN"/>
-		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
-	</section>
-	<section name="FileExtensionDialogSettings">
-		<item value="525" key="DIALOG_WIDTH"/>
-		<item value="22" key="DIALOG_Y_ORIGIN"/>
-		<item value="244" key="DIALOG_HEIGHT"/>
-		<item value="85" key="DIALOG_X_ORIGIN"/>
-		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
-	</section>
-	<section name="EditorSelectionDialog">
-	</section>
-	<section name="ImportExportAction">
 	</section>
 </section>

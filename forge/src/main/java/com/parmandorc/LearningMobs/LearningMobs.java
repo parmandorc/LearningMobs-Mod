@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * The main mob class. Here is where the mobs is initialized and loaded.
+ */
 package com.parmandorc.LearningMobs;
 
 import com.parmandorc.LearningMobs.Commands.AutoRespawningEnabledCommand;
@@ -30,14 +37,11 @@ public class LearningMobs
 	public static final String modid = "learningmobsmod";
 	public static final String version = "1.0";
 	public static int spawnEggUniqueID = 300;
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
-		System.out.println("event.getModConfigurationDirectory().getAbsolutePath() - " + event.getModConfigurationDirectory().getAbsolutePath());
-	}
 
 	@EventHandler
+	/**
+	 * This gets called when the mod is being initialized. Registers all mob classes (including renderer, language and spawn eggs)
+	 */
 	public void init(FMLInitializationEvent event)
 	{
 		MinecraftForge.EVENT_BUS.register(new QValuesSavingHandler());
@@ -57,6 +61,9 @@ public class LearningMobs
 	}
 	
 	@EventHandler
+	/**
+	 * Registers all commands existent in the mob.
+	 */
 	public void serverLoad(FMLServerStartingEvent event)
 	{
 		//Register commands
@@ -66,6 +73,9 @@ public class LearningMobs
 		event.registerServerCommand(new PVEEnabledCommand());
 	}
 	
+	/**
+	 * @return Next available ID that can be used for a spawn egg
+	 */
 	public static int getSpawnEggUniqueID()
 	{
 		while (EntityList.getStringFromID(spawnEggUniqueID) != null)
@@ -76,7 +86,12 @@ public class LearningMobs
 		return spawnEggUniqueID;
 	}
 	
-	//Registers a new egg type for specified class
+	/**
+	 * Registers a new egg type for specified class
+	 * @param entity The mob class to be registered
+	 * @param backgroundColor
+	 * @param primaryColor
+	 */
 	public static void registerEntityEgg(Class <? extends Entity> entity, int backgroundColor, int primaryColor)
 	{
 		int id = getSpawnEggUniqueID();

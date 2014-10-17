@@ -2,9 +2,9 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
 		<item value="263" key="DIALOG_WIDTH"/>
-		<item value="389" key="DIALOG_Y_ORIGIN"/>
+		<item value="210" key="DIALOG_Y_ORIGIN"/>
 		<item value="399" key="DIALOG_HEIGHT"/>
-		<item value="1332" key="DIALOG_X_ORIGIN"/>
+		<item value="709" key="DIALOG_X_ORIGIN"/>
 		<item value="1|Lucida Grande|11.0|0|COCOA|1|LucidaGrande" key="DIALOG_FONT_NAME"/>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
@@ -13,19 +13,12 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="setHealth" key="selection"/>
+		<item value="http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod" key="selection"/>
 		<list key="findhistory">
-			<item value="sethealth"/>
-			<item value="getspawn"/>
-			<item value="spawn"/>
-			<item value="persistencerequired"/>
-			<item value="qrandom"/>
-			<item value="system.out"/>
-			<item value="autoRespawning"/>
-			<item value="distance"/>
+			<item value="&lt;a href=&quot;http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod&quot;&gt;http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod&lt;/a&gt;"/>
 		</list>
 		<list key="replacehistory">
-			<item value="PVE"/>
+			<item value="http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod"/>
 		</list>
 	</section>
 </section>

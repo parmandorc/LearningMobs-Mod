@@ -1,0 +1,68 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * <a href="http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod">http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod</a>
+ * 
+ * This commands changes the targeting mode for all LearningMobs of the game.
+ * If true, LearningMobs will only target players.
+ * If false, LearningMobs will only target other LearningMobs
+ */
+package com.parmandorc.LearningMobs.Commands;
+
+import com.parmandorc.LearningMobs.EntityLearningMob;
+
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentTranslation;
+
+public class PVEEnabledCommand extends CommandBase 
+{
+	@Override
+	public String getCommandName() 
+	{
+		return "PVEEnabled";
+	}
+
+	@Override
+	public String getCommandUsage(ICommandSender p_71518_1_) 
+	{
+		return "/PVEEnabled [<true|false>] // Sets or prints wether Learning Mobs should attack players or other Learning Mobs";
+	}
+
+	@Override
+	public void processCommand(ICommandSender commandsender, String[] args) 
+	{
+		if (args.length > 1)
+		{
+			commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEnabledCommand_InvalidArguments.txt"));
+			return;
+		}
+		
+		if (args.length == 0)
+		{
+			if (EntityLearningMob.PVEEnabled)
+				commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEEnabledCommand_isTrue.txt"));
+			else
+				commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEEnabledCommand_isFalse.txt"));
+
+			return;
+		}
+		
+		if (args[0].equals("true"))
+		{
+			commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEEnabledCommand_setToTrue.txt"));
+			EntityLearningMob.PVEEnabled = true;
+		}
+		else if (args[0].equals("false"))
+		{
+			commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEEnabledCommand_setToFalse.txt"));
+			EntityLearningMob.PVEEnabled = false;
+		}
+		else
+		{
+			commandsender.addChatMessage(new ChatComponentTranslation("msg.PVEEnabledCommand_InvalidArguments.txt"));
+		}
+		return;
+	}
+
+}

@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * This command enables autoRespawning for all LearningMobs in the game. If no value is specified, prints the current value.
+ */
 package com.parmandorc.LearningMobs.Commands;
 
 import com.parmandorc.LearningMobs.EntityLearningMob;

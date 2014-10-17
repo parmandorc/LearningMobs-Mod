@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * This handler is in charge of saving the qvalues from all LearningMob classes to their respective files in the saves folder, whenever the world is unloaded (game is closed) or saved.
+ */
 package com.parmandorc.LearningMobs;
 
 import java.io.File;

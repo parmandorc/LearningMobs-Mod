@@ -1,3 +1,11 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * The base class that use all types of mobs from the mod. It controls the basic system that is shared amongst every mob class,
+ * including the SARSA q-learning algorithm, autorespawning management, and basic shared attributes.
+ */
 package com.parmandorc.LearningMobs;
 
 import java.util.HashMap;
@@ -27,36 +35,43 @@ import net.minecraft.world.World;
 
 public abstract class EntityLearningMob extends EntityCreature
 {
-	//Array of tasks a LMob is able to use.
+	/**Q-learning algorithm variables and constants*/
+	/**Array of tasks a LMob is able to use. Mob class that extends from this will need to fill this array upon contruction.*/
 	protected LMAIBase[] LMTasks;
-	//Pointers to the positions in LMTasks array of the currently executing task, and the next task that should execute, respectively.
+	/**Pointers to the positions in LMTasks array of the currently executing task, and the next task that should execute, respectively.*/
 	private int currentTask, nextTask;
-	//Battle states saved before and after the current task's execution, respectively.
+	/**Battle states saved before and after the current task's execution, respectively.*/
 	private State prevState, curState;
-	//Value used in the Q-learning algorithm. The higher this value, the faster the learning is.
+	/**Value used in the Q-learning algorithm. The higher this value, the higher the impact of instant rewards is.*/
 	private static final double QLearningRate = 0.2;
-	//Value used in the Q-learning algorithm. The higher this value, the higher the impact of the maximum expected reward will be.
+	/**Value used in the Q-learning algorithm. The higher this value, the higher the impact of long term rewards is.*/
 	private static final double QDiscountFactor = 0.15;
-	//Value used in the Q-learning algorithm. It determines the variation on the QRandomSelectionRate factor for every iteration.
+	/**Value used in the Q-learning algorithm. It determines the variation on the QRandomSelectionRate factor for every iteration, which will be defined in the mob class*/
 	private static final double QRandomDiscountFactor = 0.99999;
 	
 	//Enables autoRespawning mode
 	public static boolean autoRespawningEnabled = false;
+	//Used in autoRespawning handling
 	private boolean needsRespawning = false;
-	//Used for positive max reward
+	
+	//When a mob kills is LearningMob target, this sets to true, enabling a max reward for immediately next iteration.
 	private boolean justKilledTarget = false;
 
+	//Constant, melee combat distance
 	protected static final double meleeRange = 3.5;
+	//Constant, ranged combat distance
 	protected static final double rangedRange = 15;
 	
+	//Enabled PVE mode, or if false, enables LearningMob vs LearningMob
 	public static boolean PVEEnabled;
-	
+	//Targeting task for targeting players
 	private EntityAINearestAttackableTarget targetPlayers;
+	//Targeting task for targeting LearningMobs
 	private EntityAINearestAttackableTarget targetOtherLM;
+	//Pointer to one of the two tasks before
 	private EntityAINearestAttackableTarget currentTargeting;
 
-
-	//Group of parameters used for comparison of battle values
+	/**Group of parameters used for comparison of battle values between one iteration and the next. Includes the mobs health, its targets health and the distance between the two entities.*/
 	public class State{
 		EntityLearningMob owner;
 		float targetsHealth = 0;
@@ -64,7 +79,7 @@ public abstract class EntityLearningMob extends EntityCreature
 		float ownersHealth;
 		float distanceToTarget;
 		
-		//Constructor
+		/**Constructor*/
 		public State(EntityLearningMob owner, EntityLivingBase target)
 		{
 			this.owner = owner;
@@ -86,13 +101,22 @@ public abstract class EntityLearningMob extends EntityCreature
 		
 		public float getDistanceToTarget(){ return distanceToTarget; }
 		
+		/**
+		 * Used to determine if the distance between entities has effectively changed (from the algorithms point of view)
+		 * @param other The state to compare
+		 * @return true if and only if the distance value is effectively different
+		 */
 		public boolean distanceStateEquals(State other)
 		{
 			return getDistanceState(this.distanceToTarget) == getDistanceState(other.distanceToTarget);
 		}
 	}
 	
-	//Constructor
+	/**Constructor
+	 * 
+	 * Adds common tasks to all LearningMobs, including targeting mode.
+	 * Initializes the Qvalues map of the entity (actually calls the method that does that)
+	 */
 	public EntityLearningMob(World p_i1738_1_) 
 	{
 		super(p_i1738_1_);
@@ -113,7 +137,8 @@ public abstract class EntityLearningMob extends EntityCreature
 		this.func_110163_bv();
 	}
 
-	/*
+	/**
+	 * Makes the entity invulnerable while its autoRespawning is being handled.
 	 * Needed to avoid issues with entity not completely respawning if hit in the autorespawn process.
 	 */
 	@Override
@@ -122,14 +147,22 @@ public abstract class EntityLearningMob extends EntityCreature
         return this.needsRespawning;
     }
     
-	//Returns the currently executing task, or -1 if none has executed yet.
+	/**
+	 * @return The currently executing task, or -1 if none has executed yet.
+	 */
 	private LMAIBase getCurrentTask()
 	{
 		return (currentTask == -1) ? null : LMTasks[currentTask];
 	}
 	
+	/**
+	 * @return The currents combat state of the mob
+	 */
 	public State getCurState() { return curState; }
 
+	/**
+	 * Applies basic common attributes to all LearningMobs, like followRange, maxHealth or movementSpeed.
+	 */
     protected void applyEntityAttributes()
     {
         super.applyEntityAttributes();
@@ -139,6 +172,9 @@ public abstract class EntityLearningMob extends EntityCreature
         this.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(0.2D);
     }
     
+    /**
+     * Used for persistence of PVE mode and QRandomSelectionRate factor between game executions.
+     */
     public void writeEntityToNBT(NBTTagCompound nbt)
     {
         super.writeEntityToNBT(nbt);
@@ -147,6 +183,9 @@ public abstract class EntityLearningMob extends EntityCreature
         nbt.setBoolean("PVEEnabled", PVEEnabled);
     }
     
+    /**
+     * Used for persistence of PVE mode and QRandomSelectionRate factor between game executions.
+     */
     public void readEntityFromNBT(NBTTagCompound nbt)
     {
         super.readEntityFromNBT(nbt);
@@ -156,7 +195,10 @@ public abstract class EntityLearningMob extends EntityCreature
         this.PVEEnabled = nbt.getBoolean("PVEEnabled");
     }
   
-    
+    /**
+     * Called when attacking another entity. Adaptation of the original method from the vanilla EntityMob class.
+     * Plans: enabling knockback attacks and other combat effects (commented code).
+     */
 	public boolean attackEntityAsMob(Entity p_70652_1_)
 	{
         float f = (float)this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
@@ -199,6 +241,9 @@ public abstract class EntityLearningMob extends EntityCreature
 	}
 	
 	@Override
+	/**
+	 * Currently just handles the targeting mode changes.
+	 */
 	public void onUpdate()
 	{
 		//PVE mode handling
@@ -217,14 +262,23 @@ public abstract class EntityLearningMob extends EntityCreature
 		return true;
 	}
 	
+	/** 
+	 * This is where the q-learning algorithm iterates.
+	 * Every iteration, and only once the current executing task has finished, compares the states before and after executing the task,
+	 * and obtains a reward based on this, in order to update the QValues map accordingly. Then it chooses a new task, either randomly
+	 * or checking in the qvalues map again for the best possible task from current state.
+	 * 
+	 * Special cases:
+	 * -First iteration: if no task was performed before, and thus no state was saved, just chooses a task to execute.
+	 * -Autorespawning handling
+	 * -Fight won: if the target was killed, there's no need to choose a new task.
+	 */
 	protected void updateAITick()
 	{	
 		//Handles respawn
 		if (needsRespawning)
 		{
 			this.setHealth(0);
-			currentTask = -1;
-			nextTask = -1;
 			return;
 		}
 		
@@ -280,7 +334,7 @@ public abstract class EntityLearningMob extends EntityCreature
 	}
 	
 	
-	/* Obtains a reward based on the states before and after executing a task.
+	/** Obtains a reward based on the states before and after executing a task.
 	 * Takes into account the variation in this entity's life and the enemy's life. */
 	private double obtainReward()
 	{
@@ -288,7 +342,7 @@ public abstract class EntityLearningMob extends EntityCreature
 				prevState.getTargetsHealth() - curState.getTargetsHealth();
 	}
 	
-	//Updates the value for the current state and the just finished task in the Q_values table, based on the obtained reward.
+	/**Updates the value for the current state and the just finished task in the Q_values table, based on the obtained reward.*/
 	private void updateQ_Values(double reward)
 	{
 		int key = getQKey(getQState(prevState),currentTask);
@@ -302,9 +356,9 @@ public abstract class EntityLearningMob extends EntityCreature
 		setQIterations(getQIterations() + 1);
 	}
 	
-	/* Selects a new task for the next iteration.
+	/**Selects a new task for the next iteration.
 	 * It can return a random task or the task with the highest expected reward for the current state,
-	 * based on the Q_value of this 'best' task (the higher this value, the higher the possibility of using this task.*/
+	 * based on the QRandomSelectionRate factor's value (the higher this value, the higher the possibility of using this task.*/
 	private void obtainNextTask()
 	{
 		if (this.rand.nextDouble() < getQRandomSelectionRate())
@@ -320,7 +374,7 @@ public abstract class EntityLearningMob extends EntityCreature
 		setQRandomSelectionRate(getQRandomSelectionRate() * QRandomDiscountFactor);
 	}
 	
-	/* Designates the state passed as parameter a unique id value, different from every state.
+	/**Designates the state passed as parameter a unique id value, different from every state.
 	 * Takes into account the distance to target, the life of this entity and the life of the enemy.
 	 */
 	private int getQState(State state)
@@ -329,13 +383,13 @@ public abstract class EntityLearningMob extends EntityCreature
 				getHPState(state.getTargetsHealth(),state.getTargetsMaxHealth());
 	}
 	
-	//Designates a unique id value to the combination of a state and a task. This will be the key in the Q_values table.
+	/**Designates a unique id value to the combination of a state and a task. This will be the key in the Q_values table.*/
 	private int getQKey(int state, int task)
 	{
 		return state * getTotalLMTasks() + task;
 	}
 	
-	//Returns the task with the highest expected reward (in the Q_values table) for passed state.
+	/**Returns the task with the highest expected reward (in the Q_values table) for passed state.*/
 	private int getTaskWithMaxQValue(State state)
 	{
 		int task = 0;
@@ -352,14 +406,14 @@ public abstract class EntityLearningMob extends EntityCreature
 		return task;
 	}
 	
-	/* Designates a unique id value to the distance passed.
+	/**Designates a unique id value to the distance passed.
 	 * At a higher level, it divides the possibilities of distance between entity and enemy in three levels: out of range, ranged range or melee range.*/
 	private int getDistanceState(float distance)
 	{
 		return (distance < meleeRange) ? 0 : (distance < rangedRange) ? 1 : 2;
 	}
 	
-	/* Designates a unique id value to a certain HP value, based on the max HP value possible.
+	/**Designates a unique id value to a certain HP value, based on the max HP value possible.
 	 * At a higher level, it divides the HP bar of an entity in three levels: high, medium or low health. */
 	private int getHPState(float health, float maxHealth)
 	{
@@ -367,6 +421,23 @@ public abstract class EntityLearningMob extends EntityCreature
 		return (HPpercent == 1) ? 2 : (int)((HPpercent * 10 - 1) / 3);
 	}
 	
+	/**Called when this entity kills its target. Enables max reward for next q-learning algorithm iteration*/
+	public void onKillEntity(EntityLivingBase p_70074_1_)
+	{
+		super.onKillEntity(p_70074_1_);
+		
+		this.justKilledTarget = true;
+	}
+	
+	/**
+	 * AutoRespawningHandling. The way this is possible is by healing the target to its max health (in onDeath).
+	 * In order to reset the death animation, the mob has to immediately be killed again (in updateAITick) and then 
+	 * finally being healed to its max health (in onDeathUpdate), thus finishing the resurrection process.
+	 */
+	
+	/**
+	 * AutoRespawning handling. Also, sets the mob to a random position before resurrecting.
+	 */
 	protected void onDeathUpdate()
 	{
 		super.onDeathUpdate();
@@ -406,7 +477,7 @@ public abstract class EntityLearningMob extends EntityCreature
 		}
     }
 	
-	//Checks if mob is standing over a prohibited block when respawning. True for StaticLiquids and Fences.
+	/**Checks if mob is not standing over a prohibited block when respawning. False for StaticLiquids and Fences.*/
 	private boolean canRespawnHere()
 	{
 		int x = this.posX >= 0 ? (int)this.posX : (int)this.posX - 1;
@@ -418,6 +489,9 @@ public abstract class EntityLearningMob extends EntityCreature
 		return !(blockUnderThis instanceof BlockStaticLiquid) && !(blockUnderThis instanceof BlockFence);
 	}
     
+	/**
+	 * Autorespawning handling. Final iteration in the q-learning algorithm for negative max reward.
+	 */
 	public void onDeath(DamageSource p_70645_1_)
 	{
 		super.onDeath(p_70645_1_);
@@ -430,7 +504,14 @@ public abstract class EntityLearningMob extends EntityCreature
 				updateQ_Values(-10);
 			else
 				justKilledTarget = false;
+			
+			//Resets the next and current task pointers to initial point (as if no task was ever performed)
 			nextTask = -1;
+			if (currentTask != -1) //Remove currentTask from the tasks list.
+			{
+				this.getCurrentTask().reset();
+				this.tasks.removeTask(getCurrentTask());
+			}
 			currentTask = -1;
 		}
 		
@@ -438,6 +519,7 @@ public abstract class EntityLearningMob extends EntityCreature
 			handleAutoRespawn();
 	}
 	
+	/** Autorespawning handling.*/
 	private void handleAutoRespawn()
 	{
 		this.isDead = false;
@@ -447,15 +529,9 @@ public abstract class EntityLearningMob extends EntityCreature
 		this.needsRespawning = !this.needsRespawning;
 	}
 	
-	//Called when this entity kills its target
-	public void onKillEntity(EntityLivingBase p_70074_1_)
-	{
-		super.onKillEntity(p_70074_1_);
-		
-		this.justKilledTarget = true;
-	}
-	
-	//DEBUG purposes only
+	/**Called when player interacts with a mob. Currently for debugging purposes only.
+	 * In the future, will probably open GUI for visualizing q-learning algorithm data.
+	 */
 	protected boolean interact(EntityPlayer p_70085_1_)
 	{
 		ItemStack itemstack = p_70085_1_.getCurrentEquippedItem();
@@ -491,12 +567,36 @@ public abstract class EntityLearningMob extends EntityCreature
 		return false;
 	}
 	
+	/**
+	 * All LearningMob classes that extend from this will need to implement the following methods.
+	 */
 	
+	/**
+	 * Getter of the QValues map.
+	 */
 	protected abstract HashMap<Integer,Double> getQ_Values();
+	/**
+	 * Getter of the total number of tasks the mob is able to perform.
+	 */
 	protected abstract int getTotalLMTasks();
+	/**
+	 * This method is in charge of setting the QValues map upon construction of the mob. Will load the map from the correct file in the saves folder, or if inexistent, will create an empty map.
+	 */
 	protected abstract void Q_values_init();
+	/**
+	 * Getter of the QRandomSelectionRate factor. This determines how probably will a random task be chosen, instead of the best task.
+	 */
 	protected abstract double getQRandomSelectionRate();
+	/**
+	 * Setter of the QRandomSelectionRate factor.
+	 */
 	protected abstract void setQRandomSelectionRate(double value);
+	/**
+	 * Getter of the number of qiterations that have been executed since the beginning of executions. Currently without proper use.
+	 */
 	protected abstract int getQIterations();
+	/**
+	 * Setter of the number of qiterations that have been executed since the beginning of executions. Currently without proper use.
+	 */
 	protected abstract void setQIterations(int value);
 }

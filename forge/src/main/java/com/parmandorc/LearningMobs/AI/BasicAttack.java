@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * Basic Attack. Deals damage to the target entity if its within the specified range. If not, task will stil execute, but deal no damage.
+ */
 package com.parmandorc.LearningMobs.AI;
 
 import com.parmandorc.LearningMobs.EntityLearningMob;
@@ -10,7 +17,13 @@ import net.minecraft.world.WorldServer;
 
 public class BasicAttack extends LMAIBase 
 {
+	/**
+	 * The target entity to be attacked
+	 */
 	EntityLivingBase target;
+	/**
+	 * The maximum distance the target can be to be able to deal damage.
+	 */
 	double range;
 	
 	public BasicAttack(EntityLearningMob owner, double range) 

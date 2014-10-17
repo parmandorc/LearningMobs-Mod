@@ -1,3 +1,6 @@
+/**
+ * Adaptation from the RenderZombie from vanilla Minecraft, only using the zombie pigman textures.
+ */
 package com.parmandorc.LearningMobs.Fighter;
 
 import cpw.mods.fml.relauncher.Side;

@@ -1,0 +1,101 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * <a href="http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod">http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod</a>
+ * 
+ * The main mob class. Here is where the mobs is initialized and loaded.
+ */
+package com.parmandorc.LearningMobs;
+
+import com.parmandorc.LearningMobs.Commands.AutoRespawningEnabledCommand;
+import com.parmandorc.LearningMobs.Commands.ClearQValuesCommand;
+import com.parmandorc.LearningMobs.Commands.PVEEnabledCommand;
+import com.parmandorc.LearningMobs.Commands.QRandomSelectionRateCommand;
+import com.parmandorc.LearningMobs.Fighter.EntityLMFighter;
+import com.parmandorc.LearningMobs.Fighter.RenderLMFighter;
+
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityList.EntityEggInfo;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.server.FMLServerHandler;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.projectile.EntityEgg;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
+
+@Mod(modid = LearningMobs.modid, name = "LearningMobs Mod", version = LearningMobs.version)
+public class LearningMobs 
+{
+	public static final String modid = "learningmobsmod";
+	public static final String version = "1.0";
+	public static int spawnEggUniqueID = 300;
+
+	@EventHandler
+	/**
+	 * This gets called when the mod is being initialized. Registers all mob classes (including renderer, language and spawn eggs)
+	 */
+	public void init(FMLInitializationEvent event)
+	{
+		MinecraftForge.EVENT_BUS.register(new QValuesSavingHandler());
+		
+		int fighterColor = (180 << 16) + (100 << 8) + 100;
+		int rangerColor = (100 << 16) + (100 << 8) + 100;
+		int blackColor = 0;
+		
+		EntityRegistry.registerModEntity(EntityLMFighter.class, "LMFighter", 0, this, 80, 3, true);
+//		EntityRegistry.registerModEntity(EntityLMRanger.class, "LMRanger", 1, this, 80, 3, true);
+				
+		LanguageRegistry.instance().addStringLocalization("entity."+this.modid+".LMFighter.name","LMFighter");
+		
+		registerEntityEgg(EntityLMFighter.class, blackColor, fighterColor);
+		
+		RenderingRegistry.registerEntityRenderingHandler(EntityLMFighter.class, new RenderLMFighter());
+	}
+	
+	@EventHandler
+	/**
+	 * Registers all commands existent in the mob.
+	 */
+	public void serverLoad(FMLServerStartingEvent event)
+	{
+		//Register commands
+		event.registerServerCommand(new AutoRespawningEnabledCommand());
+		event.registerServerCommand(new ClearQValuesCommand());
+		event.registerServerCommand(new QRandomSelectionRateCommand());
+		event.registerServerCommand(new PVEEnabledCommand());
+	}
+	
+	/**
+	 * @return Next available ID that can be used for a spawn egg
+	 */
+	public static int getSpawnEggUniqueID()
+	{
+		while (EntityList.getStringFromID(spawnEggUniqueID) != null)
+		{
+			spawnEggUniqueID++;
+		}
+		
+		return spawnEggUniqueID;
+	}
+	
+	/**
+	 * Registers a new egg type for specified class
+	 * @param entity The mob class to be registered
+	 * @param backgroundColor
+	 * @param primaryColor
+	 */
+	public static void registerEntityEgg(Class <? extends Entity> entity, int backgroundColor, int primaryColor)
+	{
+		int id = getSpawnEggUniqueID();
+		EntityList.IDtoClassMapping.put(id, entity);
+		EntityList.entityEggs.put(id, new EntityEggInfo(id, backgroundColor, primaryColor));
+	}
+}

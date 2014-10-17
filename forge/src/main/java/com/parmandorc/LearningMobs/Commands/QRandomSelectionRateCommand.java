@@ -1,3 +1,11 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * This commands sets or prints the QRandomSelectionRate factor of specified class.
+ * This value determines how probably will a task be chosen randomly instead of choosing the best task.
+ */
 package com.parmandorc.LearningMobs.Commands;
 
 import com.parmandorc.LearningMobs.Fighter.EntityLMFighter;

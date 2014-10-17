@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * This command clears the qvalues map of the specified class, or of all classes if none specified. Next time the qvalues maps are saved to their file, data will be lost.
+ */
 package com.parmandorc.LearningMobs.Commands;
 
 import java.util.HashMap;

@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * Make the entity move towards its target for one second or until the distance to the target has effectively changed.
+ */
 package com.parmandorc.LearningMobs.AI;
 
 import com.parmandorc.LearningMobs.EntityLearningMob;
@@ -11,7 +18,6 @@ import net.minecraft.util.Vec3;
 public class MoveTowardsTarget extends LMAIBase 
 {
 	EntityLivingBase target;
-	Vec3 vectorToTarget;
 	double speed;
 	
 	public MoveTowardsTarget(EntityLearningMob owner, double speed) 
@@ -58,6 +64,7 @@ public class MoveTowardsTarget extends LMAIBase
 		}
 		else
 		{
+			//Finish the task if distance to target has effectively changed.
 			State newState = owner.new State(owner, target);
 			if(!owner.getCurState().distanceStateEquals(newState))
 			{

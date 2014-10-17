@@ -1,3 +1,10 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * Class of the Ranger LM class. Currently without use. Planned for the future.
+ */
 package com.parmandorc.LearningMobs;
 
 import java.util.HashMap;

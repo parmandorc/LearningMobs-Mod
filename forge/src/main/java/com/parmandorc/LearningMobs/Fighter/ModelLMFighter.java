@@ -1,3 +1,6 @@
+/** 
+ * Adaptation of the ModelZombie from vanilla Minecraft.
+ */
 package com.parmandorc.LearningMobs.Fighter;
 
 import cpw.mods.fml.relauncher.Side;

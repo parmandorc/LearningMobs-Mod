@@ -1,8 +1,0 @@
-package com.parmandorc.LearningMobs.Commands;
-
-import net.minecraft.command.CommandBase;
-
-public class SetQRandomSelectionRate extends CommandBase
-{
-
-}

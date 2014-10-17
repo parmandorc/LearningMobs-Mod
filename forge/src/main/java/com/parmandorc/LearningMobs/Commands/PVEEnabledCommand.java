@@ -1,3 +1,12 @@
+/**
+ * @author Pablo Rodríguez, parmandorc
+ * If you use this code, please remember to give credit by linking to the mobs url:
+ * http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-mods/2241864-learningmobs-mod
+ * 
+ * This commands changes the targeting mode for all LearningMobs of the game.
+ * If true, LearningMobs will only target players.
+ * If false, LearningMobs will only target other LearningMobs
+ */
 package com.parmandorc.LearningMobs.Commands;
 
 import com.parmandorc.LearningMobs.EntityLearningMob;
